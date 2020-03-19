@@ -41,6 +41,7 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
     private final static String CONTENT_TYPE = "AMQPPublisher.ContentType";
     private final static String CORRELATION_ID = "AMQPPublisher.CorrelationId";
     private final static String MESSAGE_ID = "AMQPPublisher.MessageId";
+    private final static String EXPIRATION = "AMQPPublisher.Expiration";
     private final static String HEADERS = "AMQPPublisher.Headers";
 
     public static boolean DEFAULT_PERSISTENT = false;
@@ -201,6 +202,18 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
     public void setMessageId(String content) {
         setProperty(MESSAGE_ID, content);
     }
+    
+    /**
+     * @return the expiration for the sample
+     */
+    
+    public String getExpiration() {
+        return getPropertyAsString(EXPIRATION);
+    }
+
+    public void setExpiration(String content) {
+        setProperty(EXPIRATION, content);
+    }
 
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
@@ -253,6 +266,7 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
             .priority(0)
             .correlationId(getCorrelationId())
             .replyTo(getReplyToQueue())
+            .expiration(getExpiration())
             .type(getMessageType())
             .headers(prepareHeaders())
             .build();
